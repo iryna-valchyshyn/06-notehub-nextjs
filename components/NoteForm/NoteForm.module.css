@@ -1,0 +1,93 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.heading {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: #20232b;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8dce5;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #20232b;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: #5967d8;
+  box-shadow: 0 0 0 3px rgba(89, 103, 216, 0.12);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cancelButton {
+  background: #f1f2f5;
+  color: #374151;
+}
+
+.submitButton {
+  background: #5967d8;
+  color: #ffffff;
+}
+
+.submitButton:hover {
+  background: #4655c5;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 14px;
+}
