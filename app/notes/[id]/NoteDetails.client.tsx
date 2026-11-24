@@ -17,9 +17,10 @@ export default function NoteDetails({
     data: note,
     isLoading,
     isError,
-  } = useQuery({
+   } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
   });
 
   if (isLoading) {

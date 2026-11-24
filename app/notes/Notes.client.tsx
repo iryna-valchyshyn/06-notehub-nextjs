@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchNotes } from "../../lib/api";
@@ -9,21 +9,31 @@ import SearchBox from "../../components/SearchBox/SearchBox";
 import NoteList from "../../components/NoteList/NoteList";
 import Pagination from "../../components/Pagination/Pagination";
 import NoteForm from "../../components/NoteForm/NoteForm";
+import Modal from "../../components/Modal/Modal";
 
 import styles from "./notes.module.css";
 
 export default function NotesClient() {
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", currentPage, search],
+    queryKey: ["notes", currentPage, debouncedSearch],
     queryFn: () =>
       fetchNotes({
         page: currentPage,
         perPage: 10,
-        search,
+        search: debouncedSearch,
       }),
   });
 
@@ -62,7 +72,9 @@ export default function NotesClient() {
       </button>
 
       {isFormOpen && (
-        <NoteForm onCancel={() => setIsFormOpen(false)} />
+        <Modal onClose={() => setIsFormOpen(false)}>
+          <NoteForm onCancel={() => setIsFormOpen(false)} />
+        </Modal>
       )}
 
       <div className={styles.search}>
@@ -74,11 +86,13 @@ export default function NotesClient() {
 
       <NoteList notes={data?.notes ?? []} />
 
-      <Pagination
-        pageCount={data?.totalPages ?? 0}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+      {data && data.totalPages > 1 && (
+        <Pagination
+          pageCount={data.totalPages}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </main>
   );
 }
