@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
 import { fetchNotes } from "../../lib/api";
 import SearchBox from "../../components/SearchBox/SearchBox";
@@ -28,14 +28,15 @@ export default function NotesClient() {
   }, [search]);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", currentPage, debouncedSearch],
-    queryFn: () =>
-      fetchNotes({
-        page: currentPage,
-        perPage: 10,
-        search: debouncedSearch,
-      }),
-  });
+  queryKey: ["notes", currentPage, debouncedSearch],
+  queryFn: () =>
+    fetchNotes({
+      page: currentPage,
+      perPage: 10,
+      search: debouncedSearch,
+    }),
+  placeholderData: keepPreviousData,
+});
 
   const handleSearch = (value: string) => {
     setSearch(value);
